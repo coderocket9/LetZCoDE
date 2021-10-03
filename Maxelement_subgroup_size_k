@@ -1,0 +1,85 @@
+vector <int> max_of_subarrays(int *arr, int n, int k)
+    {
+        // your code here 
+       deque<int> que;
+       vector<int> max1(n-k+1,0);
+       int index1=0;
+       int max=arr[0];
+       
+      for(int i=1;i<k;i++)
+       {
+          if(max<=arr[i]&&que.empty())
+          {
+              max=arr[i];
+              que.push_back(i);
+              
+          }
+          
+         else if(que.empty()&&max>arr[i])
+          {
+              que.push_back(0);
+              que.push_back(i);
+              //cout<<"2nd block"<<arr[i]<<endl;
+          }
+          else
+          {
+              for(auto j=que.rbegin();j!=que.rend();j++)
+              {
+                  if(arr[i]>=arr[*j])
+                  {
+                       max=arr[i];
+                      que.pop_back();
+                  }
+                  else{
+                      max=arr[*j];
+                
+                  }
+              }
+              que.push_back(i); 
+              //cout<<"3rd block"<<arr[i]<<endl;
+          }
+          
+       }
+       //this is for first box
+      
+       max1[index1++]=max;
+       
+      
+      for(int i=k;i<n;i++)
+      {
+          if(i-que.front()>=k&&!que.empty())
+          {
+             
+              que.pop_front();
+              
+          }
+          if(que.empty())
+          {
+              max=arr[i];
+          }
+          if(!que.empty())
+    {
+                  
+        for(auto j=que.rbegin();j!=que.rend();j++)
+         {
+             if(arr[i]>=arr[*j])
+             {
+                 max=arr[i];
+                 que.pop_back();
+             }
+             else
+             {
+                 max=arr[*j];
+                 
+             }
+         }
+          }
+         
+         que.push_back(i);
+         max1[index1++]=max;
+      }
+      
+     vector<int>v={1,2};
+ return max1;
+      //for the second box
+    }
